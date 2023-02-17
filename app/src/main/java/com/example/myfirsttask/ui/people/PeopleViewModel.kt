@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.myfirsttask.data.model.people.PeopleModel
+import com.example.myfirsttask.data.model.people.PeopleModelItemModel
 import com.example.myfirsttask.data.repository.Repository
 import com.example.myfirsttask.util.ResponseType
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,12 +17,8 @@ class PeopleViewModel @Inject constructor(
     val repository: Repository
 ) : ViewModel() {
 
-//    var currentTime : Long = 0
-
-//    private val _text = MutableLiveData<String>().apply {
-//        value = "This is home Fragment"
-//    }
-//    val text: LiveData<String> = _text
+    private val _clickedEmployee = MutableLiveData<PeopleModelItemModel>()
+    val clickedEmployee: LiveData<PeopleModelItemModel> = _clickedEmployee
 
     private val _result = MutableLiveData<ResponseType<PeopleModel>>()
     val result: LiveData<ResponseType<PeopleModel>> = _result
@@ -38,5 +35,7 @@ class PeopleViewModel @Inject constructor(
         }
     }
 
-
+    fun getEmployee(clickedEmployee: PeopleModelItemModel) {
+        _clickedEmployee.postValue(clickedEmployee)
+    }
 }

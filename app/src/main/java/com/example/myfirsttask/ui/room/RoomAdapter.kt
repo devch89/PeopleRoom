@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.myfirsttask.R
 import com.example.myfirsttask.data.model.room.RoomModelItemModel
 import com.example.myfirsttask.databinding.ItemRoomBinding
+import com.example.myfirsttask.util.DateTimeUtil.toDate
 
 class RoomAdapter(
     val roomList: ArrayList<RoomModelItemModel>, val clickListener: (RoomModelItemModel) -> Unit
@@ -29,16 +30,15 @@ class RoomAdapter(
                 }
                 view.tvRoomTitle.text =
                     "${context.getString(R.string.room_information)} ${roomModelItemModel.id}"
+                view.tvRoomNumber.text = "Room Number: ${roomModelItemModel.id}"
+                view.tvMaxOccupancy.text =
+                    "Max Occupancy: ${roomModelItemModel.maxOccupancy.toString()}"
+                view.tvDate.text = roomModelItemModel.createdAt?.toDate("dd/MM/yyyy")
             }
-
-
-            view.tvRoomNumber.text = "Room Number: ${roomModelItemModel.id}"
-            view.tvMaxOccupancy.text =
-                "Max Occupancy: ${roomModelItemModel.maxOccupancy.toString()}"
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder = ViewHolder(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder(
 
         ItemRoomBinding.inflate(
             LayoutInflater.from(parent.context), parent, false
@@ -46,7 +46,7 @@ class RoomAdapter(
     )
 
 
-    override fun getItemCount(): Int = roomList.size
+    override fun getItemCount() = roomList.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.setup(roomList[position])

@@ -2,6 +2,7 @@ package com.example.myfirsttask.ui.people
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.myfirsttask.R
@@ -20,19 +21,24 @@ class PeopleAdapter(
         fun setup(peopleModelItemModel: PeopleModelItemModel) {
             with(itemView) {
                 Glide.with(context).load(peopleModelItemModel.avatar)
-                    .placeholder(R.drawable.ic_launcher_background).centerCrop()
+                    .placeholder(R.drawable.ic_loading).centerCrop()
                     .into(view.ivUserPic)
+
+                view.root.setOnClickListener {
+                    clickListener(peopleModelItemModel)
+                }
             }
             view.tvJobTitle.text = peopleModelItemModel.jobtitle
-            view.tvName.text = "${peopleModelItemModel.firstName} ${peopleModelItemModel.lastName}"
-            view.tvEmail.text = peopleModelItemModel.email
-            view.tvFavoriteColor.text =
-                "Fun Fact: My favorite color is " + "${peopleModelItemModel.favouriteColor}."
+            //   view.tvName.text = "${peopleModelItemModel.firstName} ${peopleModelItemModel.lastName}"
+            // view.tvEmail.text = peopleModelItemModel.email
+            // view.tvFavoriteColor.text =
+            //      "Fun Fact: My favorite color is " + "${peopleModelItemModel.favouriteColor}."
+
         }
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder = ViewHolder(
-
         ItemPeopleBinding.inflate(
             LayoutInflater.from(parent.context), parent, false
         )

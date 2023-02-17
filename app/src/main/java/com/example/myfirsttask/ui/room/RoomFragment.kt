@@ -6,7 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myfirsttask.data.model.room.RoomModel
 import com.example.myfirsttask.databinding.FragmentRoomBinding
@@ -18,18 +20,16 @@ class RoomFragment : Fragment() {
 
     private var _binding: FragmentRoomBinding? = null
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
-    private val viewModel: RoomViewModel by viewModels()
+    private val viewModel: RoomViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
 
         _binding = FragmentRoomBinding.inflate(inflater, container, false)
-        val root: View = binding.root
+
 
         viewModel.result.observe(viewLifecycleOwner) {
             when (it) {
@@ -47,8 +47,9 @@ class RoomFragment : Fragment() {
 
         viewModel.getRoomList()
 
-        return root
+        return binding.root
     }
+
 
     private fun initViews(data: RoomModel?) {
         data?.let {

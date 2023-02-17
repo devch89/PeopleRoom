@@ -6,8 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.commit
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.myfirsttask.R
 import com.example.myfirsttask.data.model.people.PeopleModel
 import com.example.myfirsttask.databinding.FragmentPeopleBinding
 import com.example.myfirsttask.util.ResponseType
@@ -18,18 +21,16 @@ class PeopleFragment : Fragment() {
 
     private var _binding: FragmentPeopleBinding? = null
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
-    private val viewModel: PeopleViewModel by viewModels()
+    private val viewModel: PeopleViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
 
         _binding = FragmentPeopleBinding.inflate(inflater, container, false)
-        val root: View = binding.root
+
 
         viewModel.result.observe(viewLifecycleOwner) {
             when (it) {
@@ -51,12 +52,16 @@ class PeopleFragment : Fragment() {
     }
 
     private fun initViews(data: PeopleModel?) {
+
+        parentFragmentManager.commit {
+            replace(R.id.details_fragment, DetailsFragment())
+        }
+
         data?.let {
             binding.rvPeople.layoutManager = LinearLayoutManager(context)
-            binding.rvPeople.adapter = PeopleAdapter(
-                it
-            ) {
-
+            binding.rvPeople.adapter = PeopleAdapter(it) { clickedEmployee ->
+                viewModel.getEmployee(clickedEmployee)
+                // Toast.makeText(context, "${it.firstName} clicked", Toast.LENGTH_SHORT).show()
             }
         }
 
